@@ -29,7 +29,8 @@ public class WebSecurityConfig {
 
 // building http security
 @Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
     http
             .csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions().disable())
@@ -37,7 +38,7 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
                     .requestMatchers("/css/**", "/js/**", "/images/**", "/fonts/**", "/webjars/**").permitAll()
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/rss/**").permitAll()
-                    .requestMatchers("/register/**").permitAll()
+                    .requestMatchers("/register/**").hasRole("ADMIN")
                     .requestMatchers("/posts/**").permitAll()
                     .requestMatchers(PathRequest.toH2Console()).permitAll()
                     .anyRequest().authenticated()

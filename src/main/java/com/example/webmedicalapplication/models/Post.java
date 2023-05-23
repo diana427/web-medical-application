@@ -5,7 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -16,14 +17,40 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    private String title;
+    private String lastName;
 
-    @Column(columnDefinition = "TEXT")
-    private String body;
+    private String firstName;
 
-    private LocalDateTime createdAt;
+    private Integer age;
 
-    private LocalDateTime updatedAt;
+    private Long privateNumber;
+
+    private String kindOfInjury;
+
+    private String gender;
+
+    private Long phoneNumber;
+
+    private String email;
+
+    private String city;
+
+    @Lob
+    @Column(name="Problem List", columnDefinition = "CLOB")
+    private String problemList;
+
+    @Lob
+    @Column(name="Medications", columnDefinition = "CLOB")
+    private String medications;
+
+
+    private LocalDate createdAtDate;
+
+    private LocalTime createdAtTime;
+
+    private LocalDate updatedAtDate;
+
+    private LocalTime updatedAtTime;
 
     @NotNull
     //Many posts can be connected only to one account
@@ -35,10 +62,21 @@ public class Post {
     public String toString() {
         return "Post{" +
                 "id=" + id +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                "}";
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", age=" + age +
+                ", IdNumber=" + privateNumber +
+                ", kindOfInjury='" + kindOfInjury + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phoneNumber=" + phoneNumber +
+                ", email='" + email + '\'' +
+                ", city='" + city + '\'' +
+                ", problemList='" + problemList + '\'' +
+                ", medications='" + medications + '\'' +
+                ", createdAtDate=" + createdAtDate +
+                ", createdAtTime=" + createdAtTime +
+                ", updatedAt=" + updatedAtDate +
+                ", updatedAtTime=" + updatedAtTime +
+                '}';
     }
 }

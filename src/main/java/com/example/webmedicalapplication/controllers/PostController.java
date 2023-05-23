@@ -25,6 +25,13 @@ public class PostController {
     @Autowired
     private AccountService accountService;
 
+    /*
+     CREATE     -    POST /posts/{id} + requestBody
+     READ       -    GET    /posts
+     READ specific  - GET /posts/{id}
+     UPDATE     -    PUT /posts/{id} + requestBody
+     DELETE     -    DELETE /posts/{id}
+  */
     @GetMapping("/posts/{id}")
     public String getPost(@PathVariable Long id, Model model) {
         // looking for the post by id
@@ -41,7 +48,7 @@ public class PostController {
 
     @GetMapping("/posts/new")
     public String creatNewPost(Model model) {
-        Optional<Account> optionalAccount = accountService.findByEmail("user@dot.com");
+        Optional<Account> optionalAccount = accountService.findByEmail("mariaDoctor@gmail.com");
         if (optionalAccount.isPresent()) {
             Post post = new Post();
             post.setAccount(optionalAccount.get());
@@ -57,6 +64,26 @@ public class PostController {
         postService.save(post);
         return "redirect:/posts/" + post.getId();
     }
+
+    @GetMapping("/posts/new/tacmed")
+    public String creatNewPostTacMed(Model model) {
+        Optional<Account> optionalAccount = accountService.findByEmail("mariaDoctor@gmail.com");
+        if (optionalAccount.isPresent()) {
+            Post post = new Post();
+            post.setAccount(optionalAccount.get());
+            model.addAttribute("post", post);
+            return "post_new_tacmed";
+        } else {
+            return "404";
+        }
+    }
+
+    @PostMapping("/posts/new/tacmed")
+    public String saveNewPostTacMed(@ModelAttribute Post post) {
+        postService.save(post);
+        return "redirect:/posts/" + post.getId();
+    }
+
     @GetMapping("/posts/{id}/edit")
     @PreAuthorize("isAuthenticated()")
     public String getPostForEdit(@PathVariable Long id, Model model) {
@@ -80,23 +107,18 @@ public class PostController {
          if (optionalPost.isPresent()) {
              Post existingPost = optionalPost.get();
 
-             existingPost.setTitle(post.getTitle());
-             existingPost.setBody(post.getBody());
+             existingPost.setLastName(post.getLastName());
+             existingPost.setFirstName(post.getFirstName());
+             existingPost.setAge(post.getAge());
+             existingPost.setPhoneNumber(post.getPhoneNumber());
+             existingPost.setProblemList(post.getProblemList());
+             existingPost.setMedications(post.getMedications());
 
              postService.save(existingPost);
          }
 
          return "redirect:/posts/" + post.getId();
     }
-
-
-    /*
-        CREATE     -    POST /posts/{id} + requestBody
-        READ       -    GET    /posts
-        READ specific  - GET /posts/{id}
-        UPDATE     -    PUT /posts/{id} + requestBody
-        DELETE     -    DELETE /posts/{id}
-     */
 
     @GetMapping("/posts/{id}/delete")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

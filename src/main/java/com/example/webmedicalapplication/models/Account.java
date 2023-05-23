@@ -24,6 +24,7 @@ public class Account {
     private String lastName;
     private String email;
 
+
     //One-to-many relationship between account and post
     //One account can have more than one post
     @OneToMany(mappedBy = "account")
@@ -39,7 +40,8 @@ public class Account {
     @Override
     public String toString() {
         return "Account{" +
-                "firstName='" + firstName + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", authorities=" + authorities +

@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,12 +24,14 @@ public class AccountService {
     @Autowired
     private AuthorityRepository authorityRepository;
 
+
+
     public Account save(Account account) {
 
         if (account.getId() == null) {
             if (account.getAuthorities().isEmpty()) {
                 Set<Authority> authorities = new HashSet<>();
-                authorityRepository.findById("ROLE_USER").ifPresent(authorities::add);
+                authorityRepository.findById("ROLE_ADMIN").ifPresent(authorities::add);
                 account.setAuthorities(authorities);
             }
         }
@@ -40,4 +43,6 @@ public class AccountService {
     public Optional<Account> findByEmail(String email) {
         return accountRepository.findByEmail(email);
     }
+
+
 }
