@@ -1,39 +1,74 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog :: Register</title>
+    <title> MedView. Реєстрація </title>
+    <link th:href="@{css/styleLogReg.css}" href="/css/styleLogReg.css" rel="stylesheet" type="text/css" media="screen" />
 </head>
 <body>
+
+<!--navbar-->
+
+<div id="navbar">
+    <a th:href="@{/}">Головна сторінка</a>
+        <a th:href="@{/cards/new}">Нова картка</a>
+        <a th:href="@{/cards/new/tacmed}">Картка пораненого ТССС</a>
+    <div sec:authorize="hasRole('ADMIN')">
+        <a class="active" th:href="@{/register}">Зареєструвати користувача</a>
+    </div>
+</div>
+
+<!--head-->
+
+<div class="header">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+    <div class="login-container" sec:authorize="isAuthenticated()">
+        <h4> <label>Вітаємо, <span sec:authentication="name">Username</span></label></h4>
+    </div>
+</div>
+
+<!--body-->
+
 <div class="container">
-    <h1>Spring Boot Blog Application</h1>
-    <hr />
-    <a th:href="@{/}">Home</a>
-    <h2>Register New Account</h2>
-    <form action="#"
-          th:action="@{/register}"
-          th:object="${account}"
-          method="POST">
-        <div>
-            <label for="firstname">First Name</label>
-            <input id="firstname" type="text" th:field="*{firstName}" placeholder="First Name"/>
+<form action="#"
+      th:action="@{/register}"
+      th:object="${account}"
+      method="POST">
+    <div class="container">
+        <h1>Реєстрація</h1>
+        <p>Будь ласка заповніть наступну форму</p>
+        <hr>
+         <label for="firstname">Ім'я</label>
+         <input id="firstname" type="text" th:field="*{firstName}" placeholder="Ім'я" required/>
+
+        <label for="lastname">Прізвище</label>
+        <input id="lastname" type="text" th:field="*{lastName}" placeholder="Прізвище" required/>
+
+        <label for="email">Логін</label>
+        <input id="email" type="text" th:field="*{email}" placeholder="Email" required/>
+
+        <label for="password">Пароль</label>
+        <input id="password" type="password" th:field="*{password}" placeholder="Пароль" required/>
+
+        <hr>
+        <button type="submit" class="buttonRgstr">Зареєструвати</button>
+        <div class="container" style="background-color:#f1f1f1">
+            <button class="cancelbtn" onclick="window.location='http://localhost:3000/';return false;">Відмінити</button>
+            <span class="low">Вже є акаунт? <a th:href="@{/login}" href="login">Вхід</a>.</span>
         </div>
-        <div>
-            <label for="lastname">Last Name</label>
-            <input id="lastname" type="text" th:field="*{lastName}" placeholder="Last Name"/>
-        </div>
-        <div>
-            <label for="email">Email</label>
-            <input id="email" type="text" th:field="*{email}" placeholder="Email"/>
-        </div>
-        <div>
-            <label for="password">Password</label>
-            <input id="password" type="password" th:field="*{password}" placeholder="Password"/>
-        </div>
-        <button type="submit">Register!</button>
-    </form>
+    </div>
+</form>
+</div>
+
+<!--basement-->
+
+<div class="basement">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
 </div>
 
 </body>
