@@ -1,16 +1,73 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>MedView. 404</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title> MedView. 404 </title>
+    <link th:href="@{css/styleHome.css}" href="/css/styleHome.css" rel="stylesheet" type="text/css" media="screen"/>
+    <style>
+        div {
+            border: 1px solid gray;
+            padding: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <a th:href="@{/}">Home</a>
-    <h1>Sorry, Post Not Found</h1>
-    <hr />
+
+<!--navbar-->
+
+<div id="navbar">
+    <a class="active" th:href="@{/}">Головна сторінка</a>
+        <a th:href="@{/cards/new}">Нова картка</a>
+        <a th:href="@{/cards/new/tacmed}">Картка пораненого ТССС</a>
+    <div sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/register}">Зареєструвати користувача</a>
+    </div>
+    <div class="log-content" sec:authorize="!isAuthenticated()">
+        <form action="#"
+              th:action="@{/login}"
+              method="POST">
+            <input id="email" type="text" placeholder="Логін" name="email">
+            <input id="password" type="password" placeholder="Пароль" name="password">
+            <button type="submit">УВІЙТИ</button>
+        </form>
+    </div>
+    <div class="logout-content" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button type="submit">ВИХІД</button>
+        </form>
+    </div>
+</div>
+
+<!--head-->
+
+<div class="header">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+    <div class="login-container" sec:authorize="isAuthenticated()">
+        <h4> <label>Вітаємо, <span sec:authentication="name">Username</span></label></h4>
+    </div>
+</div>
+
+<div>
+    <h1>помилка 404 :( </h1>
+    <p>Йой! Виникла помилка, такої сторінки не існує.</p>
+</div>
+
+<!--basement-->
+
+<div class="basement">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
 </div>
 
 </body>
