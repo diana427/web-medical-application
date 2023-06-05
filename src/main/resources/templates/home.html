@@ -5,39 +5,113 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title> MedView. Home </title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <title> MedView. Головна сторінка </title>
+    <link th:href="@{css/styleHome.css}" href="/css/styleHome.css" rel="stylesheet" type="text/css" media="screen"/>
 </head>
 <body>
-    <div class="container">
-        <li><a th:href="@{/posts/new}">New</a></li>
-        <h1>First Post!</h1>
-        <div class="posts-container">
-            <div class="post" th:each="post : ${posts}">
-                <h2><a th:href="@{'/posts/' + ${post.id}}"
-                       th:text="${post.title}">Title</a></h2>
-                <h5 th:text="'Published at ' + ${post.createdAt}">Created At</h5>
-                <h5 th:text="'Last Update' + ${post.updatedAt}">Updated At</h5>
-                <h5 th:text="'Written by ' + ${post.account.firstName}">Account First Name</h5>
-                <p th:text="${post.body}">body text</p>
-                <br />
-            </div>
-        </div>
-        <hr />
-        <ul sec:authorize="!isAuthenticated()">
-        <li><a th:href="@{/register}">Register</a></li>
-        <li><a th:href="@{/login}">Login</a></li>
-        </ul>
-        <div sec:authorize="isAuthenticated()">
-            <form action="#"
-                    th:action="@{/logout}"
-                  method="POST">
-                <div>
-                    <label>Hi, <span sec:authentication="name">Username</span></label>
-                </div>
-                <button type="submit">Logout</button>
-            </form>
-        </div>
+
+<!--navbar-->
+
+<div id="navbar">
+    <a class="active" th:href="@{/}">Головна сторінка</a>
+    <a th:href="@{/cards/new}">Нова картка</a>
+    <a th:href="@{/cards/new/tacmed}">Картка пораненого ТССС</a>
+    <div sec:authorize="hasRole('ADMIN')">
+    <a th:href="@{/register}">Зареєструвати користувача</a>
     </div>
+<div class="log-content" sec:authorize="!isAuthenticated()">
+    <form action="#"
+          th:action="@{/login}"
+          method="POST">
+        <input id="email" type="text" placeholder="Логін" name="email">
+        <input id="password" type="password" placeholder="Пароль" name="password">
+        <button type="submit">УВІЙТИ</button>
+    </form>
+</div>
+    <div class="logout-content" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button type="submit">ВИХІД</button>
+        </form>
+    </div>
+</div>
+
+<!--head-->
+
+<div class="header">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+    <div class="login-container" sec:authorize="isAuthenticated()">
+        <h4> <label>Вітаємо, <span sec:authentication="name">Username</span></label></h4>
+    </div>
+</div>
+
+<!--body-->
+
+<div sec:authorize="!isAuthenticated()" class="not-logout-container">
+    <h1>Вітаємо, щоб продовжити, будь ласка, здійсність вхід</h1>
+    <a th:href="@{/login}" class="login-button">Увійти!</a>
+</div>
+
+<div sec:authorize="isAuthenticated()">
+<form th:action="@{/}">
+   <center> <input type="text" name="keyword" id="keyInput" onkeyup="myFunction()"  placeholder="Введіть ключове слово.." title="Введіть ключове слово" th:value="${keyword}" required />
+
+    <input class="buttonSearch" type="submit" value="Шукати" />
+
+    <input class="buttonClear" type="button" value="Очистити" id="btnClear" onclick="clearSearch()" /> </center>
+</form>
+
+<table class="cards-table" id="cards-table">
+    <thead>
+        <tr>
+            <th>Дія</th>
+            <th>Прізвище</th>
+            <th>Ім'я</th>
+            <th>Місто</th>
+            <th>Електронна адреса</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr class="card" th:each="card : ${cards}">
+        <td><a th:href="@{'/cards/' + ${card.id}}">Деталі...</a></td>
+        <td th:text="${card.lastName}">Last Name</td>
+        <td th:text="${card.firstName}">First Name</td>
+        <td th:text="${card.city}">City</td>
+        <td th:text="${card.email}">Email</td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<br>
+
+<!--basement-->
+
+<div class="basement">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+</div>
+
+<!--sticky navbar script-->
+
+<script>
+    window.onscroll = function() {myFunction()};
+
+    var navbar = document.getElementById("navbar");
+    var hold = navbar.offsetTop;
+
+    function myFunction() {
+        if (window.pageYOffset >= hold) {
+            navbar.classList.add("hold")
+        } else {
+            navbar.classList.remove("hold");
+        }
+    }
+
+    function clearSearch() {
+        window.location = "[[@{/}]]";
+    }
+</script>
 </body>
 </html>
