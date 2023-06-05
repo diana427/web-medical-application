@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +12,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component("userDetailService")
-public class MyUserDetailsService implements UserDetailsService {
+public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
     @Autowired
     private AccountService accountService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountService.findByEmail(email)
+        Account account = accountService.findUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
 
         List<GrantedAuthority> grantedAuthorities = account
@@ -31,7 +30,4 @@ public class MyUserDetailsService implements UserDetailsService {
 
          return new org.springframework.security.core.userdetails.User(account.getEmail(), account.getPassword(), grantedAuthorities);
     }
-
-
-
 }

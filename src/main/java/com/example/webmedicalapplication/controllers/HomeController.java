@@ -1,7 +1,7 @@
 package com.example.webmedicalapplication.controllers;
 
-import com.example.webmedicalapplication.models.Post;
-import com.example.webmedicalapplication.services.PostService;
+import com.example.webmedicalapplication.models.Card;
+import com.example.webmedicalapplication.services.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -12,19 +12,17 @@ import java.util.List;
 
 @Controller
 public class HomeController {
-
     @Autowired
-    private PostService postService;
+    private CardService cardService;
 
-
+    // home page
     @GetMapping("/")
+    // getting data by specific keyword
     public String home(Model model, @Param("keyword") String keyword) {
-        List<Post> posts = postService.getAll(keyword);
-//        List<Post> posts = postService.getAll();
-        model.addAttribute("posts", posts);
+        List<Card> cards = cardService.getAll(keyword);
+        model.addAttribute("cards", cards);
         model.addAttribute("keyword", keyword);
 
         return "home";
     }
-
 }

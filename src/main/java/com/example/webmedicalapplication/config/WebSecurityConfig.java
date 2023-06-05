@@ -22,12 +22,10 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
     private static final String[] WHITELIST = {
-            "/register",
             "/h2-console/*",
             "/"
     };
 
-// building http security
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
@@ -39,7 +37,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                     .requestMatchers("/").permitAll()
                     .requestMatchers("/rss/**").permitAll()
                     .requestMatchers("/register/**").hasRole("ADMIN")
-                    .requestMatchers("/posts/**").permitAll()
+                    .requestMatchers("/cards/**").permitAll()
                     .requestMatchers(PathRequest.toH2Console()).permitAll()
                     .anyRequest().authenticated()
             )
@@ -52,7 +50,6 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
                     .failureUrl("/login?error")
                     .permitAll()
             );
-
 
     return http.build();
 }

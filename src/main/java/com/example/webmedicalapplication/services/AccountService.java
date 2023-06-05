@@ -8,7 +8,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,14 +16,10 @@ public class AccountService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private AuthorityRepository authorityRepository;
-
-
 
     public Account save(Account account) {
 
@@ -36,13 +31,12 @@ public class AccountService {
             }
         }
 
+        // encryption of password
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         return accountRepository.save(account);
     }
 
-    public Optional<Account> findByEmail(String email) {
-        return accountRepository.findByEmail(email);
+    public Optional<Account> findUserByEmail(String email) {
+        return accountRepository.findUserByEmail(email);
     }
-
-
 }

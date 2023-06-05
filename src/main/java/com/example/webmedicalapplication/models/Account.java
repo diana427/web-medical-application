@@ -25,12 +25,11 @@ public class Account {
     private String email;
 
 
-    //One-to-many relationship between account and post
-    //One account can have more than one post
+    // one account can have many cards
     @OneToMany(mappedBy = "account")
-    private List<Post> posts;
+    private List<Card> cards;
 
-    // Each user can have multiply authorities
+    // many account can have many authorities
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
     joinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")},
