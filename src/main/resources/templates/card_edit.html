@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> MedView. Редагувати </title>
+    <link th:href="@{/css/styleCardNew.css}" href="/css/styleCard.css" rel="stylesheet" type="text/css" media="screen"/>
+</head>
+<body>
+
+<!--navbar-->
+
+<div id="navbar">
+    <a class="active" th:href="@{/}">Головна сторінка</a>
+        <a th:href="@{/cards/new}">Нова картка</a>
+        <a th:href="@{/cards/new/tacmed}">Картка пораненого ТССС</a>
+    <div sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/register}">Зареєструвати користувача</a>
+    </div>
+    <div class="logout-content" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button type="submit">ВИХІД</button>
+        </form>
+    </div>
+</div>
+<!--head-->
+
+<div class="header">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+    <div class="login-container" sec:authorize="isAuthenticated()">
+        <h4> <label>Вітаємо, <span sec:authentication="name">Username</span></label></h4>
+    </div>
+</div>
+
+<!--body-->
+
+<div class="row">
+    <div class="side">
+        <h2>Редагувати данні</h2>
+        <h3>Будь ласка, заповність наступну форму</h3>
+    </div>
+    <div class="main">
+        <form action="#"
+              th:action="@{'/cards/{id}'(id=${card.id})}"
+              th:object="${card}"
+              method="POST">
+            <input type="hidden" th:field="*{account}" />
+            <input type="hidden" th:field="*{createdAtDate}" />
+            <input type="hidden" th:field="*{createdAtTime}" />
+            <h2>Прізвище</h2>
+            <input id="lName" type="text" th:field="*{lastName}" placeholder="Прізвище"/>
+
+            <h2>Ім'я</h2>
+            <input id="fName" type="text" th:field="*{firstName}" placeholder="Ім'я"/>
+
+            <h2>Вік</h2>
+            <input id="age" type="text" th:field="*{age}" placeholder="Вік"/>
+
+            <h2>Місто</h2>
+            <input id="City" type="text" th:field="*{city}" placeholder="Місто"/>
+
+            <h2>Електронна адреса</h2>
+            <input id="email" type="text" th:field="*{email}" placeholder="Email"/>
+
+            <h2>Номер телефона</h2>
+            <input id="phoneNumber" type="text" th:field="*{phoneNumber}" placeholder="Номер телефона"/>
+
+        <h2>Лист скарг</h2>
+            <textarea id="problemList" th:field="*{problemList}" rows="10" cols="50"></textarea>
+        <h2>Назначенні медикаменти</h2>
+            <textarea id="medications" th:field="*{medications}" rows="10" cols="50"></textarea>
+            <br>
+            <button type="submit" class="buttonCreat">Редагувати</button>
+        </form>
+</div>
+</div>
+
+<!--basement-->
+
+<div class="basement">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+</div>
+</body>
+</html>
