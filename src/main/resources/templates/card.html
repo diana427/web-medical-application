@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title> MedView. Деталі </title>
+    <link th:href="@{/css/styleCard.css}" href="/css/styleCard.css" rel="stylesheet" type="text/css" media="screen"/>
+</head>
+<body>
+
+<!--navbar-->
+
+<div id="navbar">
+    <a class="active" th:href="@{/}">Головна сторінка</a>
+        <a th:href="@{/cards/new}">Нова картка</a>
+        <a th:href="@{/cards/new/tacmed}">Картка пораненого ТССС</a>
+    <div sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/register}">Зареєструвати користувача</a>
+    </div>
+    <div class="logout-content" sec:authorize="isAuthenticated()">
+        <form action="#"
+              th:action="@{/logout}"
+              method="POST">
+            <button type="submit">ВИХІД</button>
+        </form>
+    </div>
+</div>
+
+<!--head-->
+
+<div class="header">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+    <div class="login-container" sec:authorize="isAuthenticated()">
+        <h4> <label>Hi, <span sec:authentication="name">Username</span></label></h4>
+    </div>
+</div>
+
+<!--body-->
+
+<div class="row">
+    <div class="side">
+        <h2>Особиста інформація</h2>
+        <p>Особисті дані перевірено &#9989;</p>
+        <h3 th:text="${card.email}">Email</h3>
+        <h3 th:text="${card.phoneNumber}">Phone Number</h3>
+        <h5 th:text="'Створено ' + ${card.createdAtDate} + ' o ' + ${card.createdAtTime}">Created At</h5>
+        <h5 th:text="'Останнє редагування ' + ${card.updatedAtDate} + ' o ' + ${card.updatedAtTime}">Updated At</h5>
+        <h5 th:text="'Картка написана лікарем/лікаркою: ' + ${card.account.firstName} + ' '+ ${card.account.lastName}">Account Name</h5>
+        <li><a th:href="@{'/cards/' + ${card.id} + '/edit'}">Редагувати данні</a></li>
+        <div sec:authorize="hasRole('ROLE_ADMIN')">
+        <li><a th:href="@{'/cards/' + ${card.id} + '/delete'}">Видалити данні</a></li>
+        </div>
+    </div>
+    <div class="main">
+        <h2 th:text="${card.lastName} + ' ' + ${card.firstName}">Last Name and First Name</h2>
+        <h2 th:text="'Стать: ' + ${card.gender}">Gender</h2>
+        <h2 th:text="'Вік: ' + ${card.age}">Age</h2>
+        <h2 th:text="'Місто або населений пункт: ' + ${card.city}">City</h2>
+        <h2>Лист скарг</h2>
+        <p th:text="${card.problemList}">Problem List</p>
+        <h2>Назначенні медикаменти</h2>
+        <p th:text="${card.medications}">Medications</p>
+    </div>
+</div>
+
+<!--basement-->
+
+<div class="basement">
+    <h2>MedView</h2>
+    <p>Професійний погляд на ваші проблеми.</p>
+</div>
+
+</body>
+</html>
